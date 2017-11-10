@@ -8,6 +8,9 @@ services:
       context: ./facade/
       args:
         - NODE_ENV=dev
+    volumes:
+      - './facade/src:/usr/src/app/src'
+      - './facade/test:/usr/src/app/test'
     ports:
       - '5000:5000'
 

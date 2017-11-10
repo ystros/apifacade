@@ -2,14 +2,12 @@
 
 var path = require('path');
 var fs = require('fs');
-var config = require('../../config');
 var chai = require('chai');
 var like = require('chai-like');
 var when = require('when');
 var nodefn = require('when/node');
 var logger = require('winston');
 var filesPath = __dirname;
-mongoose.Promise = when;
 
 chai.use(like);
 chai.should();
