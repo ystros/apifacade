@@ -11,10 +11,9 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 
-ADD ./package.json /usr/src/app/package.json
-RUN npm install
+ADD package.json /usr/src/app/package.json
+RUN npm install 
 
-ADD ./src /usr/src/app/src 
-RUN echo $NODE_ENV
+ADD ./src /usr/src/app/src
 
-CMD ["node", "/usr/src/app/index.js"]
+CMD ["node", "/usr/src/app/src/index.js"]

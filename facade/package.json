@@ -1,0 +1,15 @@
+{
+  "name": "products-service",
+  "version": "1.0.0",
+  "description": "Boilerplate node.js microservice (swagger+mongoose)",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "express": "^4.16.2",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.1",
+    "when": "^3.7.8",
+    "winston": "^2.4.0"
+  }
+}
+
