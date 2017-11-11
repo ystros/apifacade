@@ -5,12 +5,12 @@ services:
   api-facade:
     container_name: api-facade
     build:
-      context: ./facade/
+      context: .
       args:
         - NODE_ENV=dev
     volumes:
-      - './facade/src:/usr/src/app/src'
-      - './facade/test:/usr/src/app/test'
+      - './src:/usr/src/app/src'
+      - './test:/usr/src/app/test'
     ports:
       - '5000:5000'
 
