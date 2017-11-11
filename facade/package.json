@@ -1,7 +1,7 @@
 {
   "name": "api-facade",
   "version": "0.1.0",
-  "description": "Boilerplate node.js microservice (swagger+mongoose)",
+  "description": "Service that applies policy check for request and routes request to named service",
   "main": "index.js",
   "private": true,
   "scripts": {
