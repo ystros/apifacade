@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Runs tests for the project",
   "scripts": {
-    "test": "docker-compose build && docker-compose up -d api-facade && docker-compose run api-facade npm run unit-test"
+    "test": "docker-compose build && docker-compose up -d api-facade && docker-compose run api-facade npm run unit-test && docker-compose down"
   }
 }
 
