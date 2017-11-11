@@ -39,6 +39,6 @@ docker-compose down
 Run the facade unit tests
 NOTE:  This step requires you have some version of node and npm installed on your host.
 ```
-cd [dev home]/apifacade/facade
+cd [dev home]/apifacade
 npm test
 ```

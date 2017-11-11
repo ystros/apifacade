@@ -2,11 +2,9 @@
   "name": "api-facade",
   "version": "0.1.0",
   "description": "Service that applies policy check for request and routes request to named service",
-  "main": "index.js",
   "private": true,
   "scripts": {
-    "unit-test": "istanbul cover _mocha test/unit/index.js",
-    "test": "docker-compose build && docker-compose up -d api-facade && docker-compose run api-facade npm run unit-test"
+    "unit-test": "istanbul cover _mocha test/unit/index.js"
   },
   "dependencies": {
     "chai": "^4.1.2",
