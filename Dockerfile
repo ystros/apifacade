@@ -14,6 +14,7 @@ ENV NODE_ENV $NODE_ENV
 ADD package.json /usr/src/app/package.json
 RUN npm install 
 
-ADD ./src /usr/src/app/src
+ADD ./src  /usr/src/app/src
+ADD ./test /usr/src/app/test
 
 CMD ["node", "/usr/src/app/src/index.js"]

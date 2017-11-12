@@ -28,3 +28,17 @@ Spin down the service when done
 ```
 docker-compose down
 ```
+
+# Test
+Make sure the service is spun down
+```
+cd [dev home]/apifacade
+docker-compose down
+```
+
+Run the facade unit tests
+NOTE:  This step requires you have some version of node and npm installed on your host.
+```
+cd [dev home]/apifacade
+npm test
+```
