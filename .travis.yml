@@ -8,7 +8,7 @@ cache:
 node_js:
   - 9.1
 before_install:
-  - docker network create disocovery
+  - docker network create discovery
 script:
   - npm test
 after_install:
