@@ -10,6 +10,6 @@ node_js:
 before_script:
   - docker network create disocovery
 script:
-  - npm testa
+  - npm test
 after_script:
   - docker network rm discovery
