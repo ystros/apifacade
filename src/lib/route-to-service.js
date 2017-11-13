@@ -2,7 +2,7 @@ const url = require('url');
 const logger = require('winston');
 const when = require('when');
 const nodefn = require('when/node');
-
+const request = require('request-promise');
 
 /*
  *  Expects request URL to be of the form
@@ -19,9 +19,14 @@ function getServiceURL(options) {
     host = process.env.ENVIRONMENT_NAME+"."+host;
   }
   if (!process.env.DISCOVERY_METHOD || process.env.DISCOVERY_METHOD == 'docker-compose') {
-    options[key] = u.protocol+'//'+host;
+    options[key] = u.protocol+'//'+host + u.path;
     return options;
   }  
 }
 
+function send(options) {
+  return when(request(getServiceURL(options)));
+}
+
 module.exports.getServiceURL = getServiceURL;
+module.exports.send = send;
