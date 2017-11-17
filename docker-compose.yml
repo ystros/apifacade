@@ -12,7 +12,7 @@ services:
       - './src:/usr/src/app/src'
       - './test:/usr/src/app/test'
     ports:
-      - '5000:5000'
+      - '3000:3000'
 
 networks:
   default:
