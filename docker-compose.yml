@@ -14,6 +14,29 @@ services:
     ports:
       - '3000:3000'
 
+  consul:
+    build:
+      context: ./consul/
+    ports:
+      - "8300"
+      - "8301"
+      - "8400"
+      - "8500:8500"
+      - "53"
+      - "53/udp"
+    command:
+      - agent
+      - -dev
+      - -ui
+      - -bind
+      - 0.0.0.0
+      - -client
+      - 0.0.0.0
+      - -dns-port
+      - "53"
+      - -recursor
+      - 8.8.8.8
+
 networks:
   default:
     external:
