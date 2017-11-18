@@ -55,7 +55,7 @@ function send(req, resp) {
     return getHostName(serviceName)
       .then((hosts) => {
         logger.info('hosts='+hosts);
-        return proxy(serviceName+":5000", {
+        return proxy(hosts, {
             proxyReqPathResolver: function(req) {
                 return path;
             }
@@ -83,5 +83,10 @@ function getServiceURL(req, service) {
   }  
 }
 
-module.exports.getServiceURL = getServiceURL;
+logger.info("DISCOVERY_DNS:" + process.env.DISCOVERY_DNS);
+if(process.env.DISCOVERY_DNS) {
+  logger.info("USING DISCOVERY_DNS:" + process.env.DISCOVERY_DNS); 
+  dns.setServers([process.env.DISCOVERY_DNS]);
+}
+
 module.exports.send = send;

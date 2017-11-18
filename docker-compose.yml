@@ -13,6 +13,8 @@ services:
       - './test:/usr/src/app/test'
     ports:
       - '3000:3000'
+    environment:
+      DISCOVERY_DNS: consul
 
   consul:
     build:
