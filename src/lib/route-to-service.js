@@ -31,6 +31,7 @@ function getHostName(serviceName) {
  * Convert the passed in request to a discovery neutral service request
  */
 function send(req, resp) {
+    logger.info("url="+req.url);
     let pathElements = req.url.split('/');
     logger.info("pathElements="+pathElements);
     let serviceName = pathElements.shift();
@@ -55,6 +56,11 @@ function send(req, resp) {
     return getHostName(serviceName)
       .then((hosts) => {
         logger.info('hosts='+hosts);
+        
+        // Check if this is a request for swagger docs
+        if (path === '/docs') return when(request({url:hosts+path}));
+        
+        // It's not, proceed as normal
         return proxy(hosts, {
             proxyReqPathResolver: function(req) {
                 return path;
