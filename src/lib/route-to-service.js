@@ -10,7 +10,7 @@ const request = require('request-promise');
 
 function getHostName(serviceName) {
   return nodefn
-    .call(dns.resolveSrv, serviceName)
+    .call(dns.resolveSrv, serviceName + '.service.consul')
     .then(function(srvs) {
       logger.info("srvs="+JSON.stringify(srvs));
       return when
