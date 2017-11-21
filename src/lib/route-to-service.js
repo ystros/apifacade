@@ -12,7 +12,7 @@ function getHostName(serviceName) {
   return nodefn
     .call(dns.resolveSrv, serviceName + '.service.consul')
     .then(function(srvs) {
-      logger.info("srvs="+JSON.stringify(srvs));
+      logger.error("srvs="+JSON.stringify(srvs));
       return when
         .map(srvs, function(srv) {
           return nodefn
@@ -31,9 +31,9 @@ function getHostName(serviceName) {
  * Convert the passed in request to a discovery neutral service request
  */
 function send(req, resp) {
-    logger.info("url="+req.url);
+    logger.error("url="+req.url);
     let pathElements = req.url.split('/');
-    logger.info("pathElements="+pathElements);
+    logger.error("pathElements="+pathElements);
     let serviceName = pathElements.shift();
     if (serviceName.length === 0 && pathElements.length > 0) {
         serviceName = pathElements.shift();
@@ -41,8 +41,8 @@ function send(req, resp) {
 
     let path = "/" + _.join(pathElements, '/');
 
-    logger.info("serviceName: " + serviceName);
-    logger.info("path: " + path);
+    logger.error("serviceName: " + serviceName);
+    logger.error("path: " + path);
 
     // TODO lookup service registry (404 if no entry)
 
@@ -55,7 +55,7 @@ function send(req, resp) {
     // proxy the request to the service
     return getHostName(serviceName)
       .then((hosts) => {
-        logger.info('hosts='+hosts);
+        logger.error('hosts='+hosts);
         
         // Check if this is a request for swagger docs
         if (path === '/docs') return when(request({url:hosts+path}));
