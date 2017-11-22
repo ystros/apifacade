@@ -1,11 +1,9 @@
-var routeToService = require('../../../src/lib/route-to-service.js');
-var assert = require('assert');
-var when = require('when'); 
-var nock = require('nock');
-var sinon = require('sinon');
-var dns = require('dns');
-
-require('sinon-as-promised')(when);
+const routeToService = require('../../../src/lib/route-to-service.js');
+const assert = require('assert');
+const when = require('when'); 
+const nock = require('nock');
+const sinon = require('sinon');
+const dns = require('dns');
 
 describe('lib/route-to-service', () => { 
   describe('#send', () => {
@@ -13,13 +11,25 @@ describe('lib/route-to-service', () => {
       let env; 
       let productService = null;
       let productServiceStaging = null;
-      let ctx = null;
-      let DNSMock = null;
+      let sandbox = null;
 
       beforeEach(() => {
-        ctx = sinon.sandbox.create();
+        sandbox = sinon.sandbox.create();
         env = process.env;
-        DNSMock = ctx.mock(dns); 
+     
+        sandbox.stub(dns, 'resolveSrv')
+            .usingPromise(when)
+            .callsFake(function blat() {console.log("in fake function")})
+            .resolves([{"name":"ac120005.addr.dc1.consul","port":5000,"priority":1,"weight":1}]);
+        sandbox.stub(dns, 'resolve')
+            .usingPromise(when)
+            .callsFake(function blat() {console.log("in resolve fake")})
+            .resolves('172.18.0.5');
+
+        sandbox.stub(routeToService, 'getHostName')
+            .usingPromise(when)
+            .callsFake(function blat() {console.log('in stub for getHostName');})
+            .resolves('products-service-host-port');
         productService = nock('https://products-service-host-port')
         .get('/products') 
         .reply(200, [{
@@ -29,17 +39,11 @@ describe('lib/route-to-service', () => {
       });
       afterEach(() => { 
         process.env = env;
-        ctx.restore();
+        sandbox.restore();
       });
  
       it('should proxy to products-service via consul', () => {
-        process.env.ENVIRONMENT_NAME="";
-        process.env.DISCOVERY_METHOD="";
-      
-        DNSMock.expects('resolveSrv')
-            .withArgs('products-service.service.consul')
-            .returns('https://products-service-host-port');
-  
+        console.log('starting test'); 
         return when(routeToService.send({'url':'/products-service/products'}))
         .then(products => {
             assert(products);
@@ -50,3 +54,4 @@ describe('lib/route-to-service', () => {
     });
   });
 }); 
+

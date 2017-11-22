@@ -9,6 +9,7 @@ const _ = require('lodash');
 const request = require('request-promise');
 
 function getHostName(serviceName) {
+  logger.error("Lookup host name for: " + serviceName);
   return nodefn
     .call(dns.resolveSrv, serviceName + '.service.consul')
     .then(function(srvs) {
@@ -17,7 +18,8 @@ function getHostName(serviceName) {
         .map(srvs, function(srv) {
           return nodefn
             .call(dns.resolve, srv.name)
-            .then(function(a) { 
+           .then(function(a) { 
+              logger.error("a:" + a);
               return a + ':' + srv.port;
             });
         });
@@ -30,7 +32,7 @@ function getHostName(serviceName) {
 /**
  * Convert the passed in request to a discovery neutral service request
  */
-function send(req, resp) {
+function send(req, resp, next) {
     logger.error("url="+req.url);
     let pathElements = req.url.split('/');
     logger.error("pathElements="+pathElements);
@@ -65,29 +67,9 @@ function send(req, resp) {
             proxyReqPathResolver: function(req) {
                 return path;
             }
-        })(req, resp); 
+        })(req, resp, next); 
      });
 };
-
-/*
- *  Expects request URL to be of the form
- *    [service-name]/[resource]  e.g. products-service/products
- *  Transforms request url based on discovery method
- *    docker-compose:   no change needed
- *    consul:  
- */
-function getServiceURL(req, service) {
-  const key = req.uri ? 'uri' : 'url';
-  var u = url.parse(options[key]);
-  var host = u.hostname;
-  if(process.env.ENVIRONMENT_NAME) {
-    host = process.env.ENVIRONMENT_NAME+"."+host;
-  }
-  if (!process.env.DISCOVERY_METHOD || process.env.DISCOVERY_METHOD == 'docker-compose') {
-    req[key] = u.protocol+'//'+host + u.path;
-    return options;
-  }  
-}
 
 logger.info("DISCOVERY_DNS:" + process.env.DISCOVERY_DNS);
 if(process.env.DISCOVERY_DNS) {
@@ -96,3 +78,4 @@ if(process.env.DISCOVERY_DNS) {
 }
 
 module.exports.send = send;
+module.exports.getHostName = getHostName;
